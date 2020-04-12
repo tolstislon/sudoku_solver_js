@@ -1,1 +1,7 @@
-# sudoku_solver_js
+# Sudoku solver
+
+##### tests
+
+```
+path\index.html#tests
+```

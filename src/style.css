@@ -1,0 +1,154 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#version {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    font-size: 12px;
+    color: grey;
+}
+
+#content {
+    margin: 2em auto 1em auto;
+    min-width: 400px;
+    min-height: 400px;
+}
+
+#info {
+    text-align: center;
+    margin-bottom: 1em;
+    height: 20px;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: gray;
+}
+
+.user {
+    color: #828282;
+}
+
+table {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 2px;
+    border: 1px solid #dee2e6;
+}
+
+table td {
+    vertical-align: middle;
+    text-align: center;
+    border: 1px solid #dee2e6;
+    color: #191919;
+}
+
+input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+input:disabled {
+    background: #f3fffb;
+}
+
+table tr:nth-child(3n + 1) td {
+    border-top: 2px solid black;
+}
+
+table tr:last-child td {
+    border-bottom: 2px solid black;
+}
+
+table td:nth-child(3n + 1) {
+    border-left: 2px solid black;
+}
+
+table td:last-child {
+    border-right: 2px solid black;
+}
+
+#button-block {
+    text-align: center;
+    margin: 0 1em;
+    min-width: 400px;
+}
+
+button {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    overflow: visible;
+    width: 10em;
+    text-transform: capitalize;
+}
+
+button:disabled {
+    opacity: .5
+}
+
+button.run {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+button.run:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+button.run:active {
+    background-color: #1e7e34;
+    border-color: #1c7430;
+}
+
+button.run:focus {
+    background-color: #218838;
+    border-color: #1e7e34;
+    box-shadow: 0 0 0 0.2rem rgba(72, 180, 97, .5);
+}
+
+
+button.reset {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+button.reset:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+button.reset:active {
+    background-color: #bd2130;
+    border-color: #b21f2d;
+}
+
+button.reset:focus {
+    background-color: #c82333;
+    border-color: #bd2130;
+    box-shadow: 0 0 0 0.2rem rgba(225, 83, 97, .5);
+}
+
