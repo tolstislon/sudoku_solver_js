@@ -1,7 +1,9 @@
-const version = '0.1.0';
+const version = '0.1.1';
 const minSize = 400;
 
-
+/**
+ * @returns {null}
+ */
 function showVersion() {
     let span = document.createElement('span');
     span.innerText = 'Version: ' + version;
@@ -24,6 +26,9 @@ function emptyDatalist() {
     return data;
 }
 
+/**
+ * @returns {null}
+ */
 function onInput() {
     let value = this.value;
     if (value.length > 1) {
@@ -35,7 +40,9 @@ function onInput() {
     this.value = value;
 }
 
-
+/**
+ * @returns {null}
+ */
 function createTable() {
     let table = document.createElement('table');
     let tbody = document.createElement('tbody');
@@ -58,7 +65,9 @@ function createTable() {
     document.getElementById('content').appendChild(table);
 }
 
-
+/**
+ * @returns {null}
+ */
 function viewPort() {
     let width = document.documentElement.clientWidth;
     let height = document.documentElement.clientHeight;
@@ -70,21 +79,24 @@ function viewPort() {
     }
 }
 
-
+/**
+ * @returns {null}
+ */
 function resetClick() {
-    document.querySelectorAll('input[type="text"]').forEach(function (input) {
+    document.querySelectorAll('input[type="text"]').forEach(input => {
         input.value = '';
         input.disabled = false;
     });
     document.getElementById('info').innerText = '';
 }
 
+/**
+ * @returns {null}
+ */
 function runClick() {
-    document.querySelectorAll('button').forEach(function (button) {
-        button.disabled = true
-    })
+    document.querySelectorAll('button').forEach(button => button.disabled = true);
     let data = emptyDatalist();
-    document.querySelectorAll('input[type="text"]').forEach(function (input) {
+    document.querySelectorAll('input[type="text"]').forEach(input => {
         input.disabled = true;
         let value = input.value ? Number(input.value) : 0;
         if (!value) {
@@ -98,14 +110,12 @@ function runClick() {
     solver(data, 0, 0);
     let endTime = new Date().getTime();
     document.getElementById('info').innerText = 'Elapsed: ' + (endTime - startTime) / 1000 + ' sec.';
-    document.querySelectorAll('input[type="text"]').forEach(function (input) {
+    document.querySelectorAll('input[type="text"]').forEach(input => {
         let row = Number(input.getAttribute('data-row'));
         let col = Number(input.getAttribute('data-col'));
         input.value = data[row][col];
     });
-    document.querySelectorAll('button').forEach(function (button) {
-        button.disabled = false;
-    })
+    document.querySelectorAll('button').forEach(button => button.disabled = false);
 }
 
 /**
