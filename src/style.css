@@ -32,7 +32,7 @@
     color: #828282;
 }
 
-table {
+table.sudoku9x9 {
     width: 100%;
     height: 100%;
     background-color: transparent;
@@ -41,7 +41,7 @@ table {
     border: 1px solid #dee2e6;
 }
 
-table td {
+table.sudoku9x9 td {
     vertical-align: middle;
     text-align: center;
     border: 1px solid #dee2e6;
@@ -53,7 +53,7 @@ input {
     height: 100%;
     border: none;
     text-align: center;
-    font-size: 2em;
+    font-size: 2rem;
     font-weight: bold;
 }
 
@@ -61,19 +61,19 @@ input:disabled {
     background: #f3fffb;
 }
 
-table tr:nth-child(3n + 1) td {
+table.sudoku9x9 tr:nth-child(3n + 1) td {
     border-top: 2px solid black;
 }
 
-table tr:last-child td {
+table.sudoku9x9 tr:last-child td {
     border-bottom: 2px solid black;
 }
 
-table td:nth-child(3n + 1) {
+table.sudoku9x9 td:nth-child(3n + 1) {
     border-left: 2px solid black;
 }
 
-table td:last-child {
+table.sudoku9x9 td:last-child {
     border-right: 2px solid black;
 }
 
