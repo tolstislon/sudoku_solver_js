@@ -1,8 +1,23 @@
-const version = '0.1.2';
+const version = '0.2.0';
 const minSize = 400;
-const pattern = /[1-9]/i;
 const start = 0;
-const end = 9;
+let defaultSize = 9;
+
+const valueSizes = {
+    9: {
+        pattern: /[1-9]/,
+        cls: 'sudoku9',
+        size: 9,
+        count: 1
+    },
+    16: {
+        pattern: /[1-9][0-6]?/,
+        cls: 'sudoku16',
+        size: 16,
+        count: 2
+    }
+}
+
 
 /**
  * @returns {null}
@@ -15,9 +30,10 @@ function showVersion() {
 }
 
 /**
+ * @param end {number}
  * @returns {number[][]}
  */
-function emptyDatalist() {
+function emptyDatalist(end) {
     let data = [];
     for (let i = start; i < end; i++) {
         let row = [];
@@ -30,11 +46,18 @@ function emptyDatalist() {
 }
 
 /**
+ * @param size {number}
  * @returns {null}
  */
-function createTable() {
+function createTable(size) {
+    let cls = valueSizes[size].cls;
+    let end = valueSizes[size].size;
+    let pattern = valueSizes[size].pattern;
+    let count = valueSizes[size].count;
+    defaultSize = end;
+
     let table = document.createElement('table');
-    table.classList.add('sudoku9x9');
+    table.classList.add(cls);
     let tbody = document.createElement('tbody');
     for (let row = start; row < end; row++) {
         let tr = document.createElement('tr');
@@ -47,7 +70,7 @@ function createTable() {
             input.setAttribute('data-col', String(col));
             input.addEventListener('input', event => {
                 let value = event.target.value;
-                value = value.length > 1 ? value[0] : value;
+                value = value.length > count ? value.slice(0, count) : value;
                 value = value && !value.match(pattern) ? '' : value;
                 event.target.value = value;
             });
@@ -58,6 +81,7 @@ function createTable() {
     }
     table.appendChild(tbody);
     document.getElementById('content').appendChild(table);
+    document.querySelectorAll('button').forEach(button => button.disabled = false);
 }
 
 /**
@@ -84,6 +108,7 @@ function resetClick() {
         input.classList.remove('user');
     });
     document.getElementById('info').innerText = '';
+    document.querySelectorAll('button').forEach(button => button.disabled = false);
 }
 
 /**
@@ -91,7 +116,7 @@ function resetClick() {
  */
 function runClick() {
     document.querySelectorAll('button').forEach(button => button.disabled = true);
-    let data = emptyDatalist();
+    let data = emptyDatalist(defaultSize);
     document.querySelectorAll('input[type="text"]').forEach(input => {
         input.disabled = true;
         let value = input.value ? Number(input.value) : 0;
@@ -102,8 +127,10 @@ function runClick() {
         let col = Number(input.getAttribute('data-col'));
         data[row][col] = value;
     });
+
+
     let startTime = new Date().getTime();
-    solver(data, 0, 0);
+    data = new Solver(data, defaultSize).getResult();
     let endTime = new Date().getTime();
     document.getElementById('info').innerText = `Elapsed: ${(endTime - startTime) / 1000} sec.`;
     document.querySelectorAll('input[type="text"]').forEach(input => {
@@ -111,96 +138,7 @@ function runClick() {
         let col = Number(input.getAttribute('data-col'));
         input.value = data[row][col];
     });
-    document.querySelectorAll('button').forEach(button => button.disabled = false);
-}
-
-/**
- * @param {number[][]} data
- * @param {number} row
- * @param {number} col
- * @returns {null|number[]}
- */
-function fund_next_cell(data, row, col) {
-    for (let line of [[row, col], [0, 0]]) {
-        let [x, y] = line;
-        for (let r = x; r < end; r++) {
-            for (let c = y; c < end; c++) {
-                if (data[r][c] === 0) {
-                    return [r, c];
-                }
-            }
-        }
-    }
-    return null;
-}
-
-/**
- * @param {number} value
- * @returns {number}
- */
-function calc(value) {
-    return Math.trunc(value / 3) * 3;
-}
-
-/**
- * @param {number} row
- * @param {number} col
- * @param {number} value
- * @param {number[][]} data
- * @returns {boolean}
- */
-function validate(row, col, value, data) {
-    let line = column = true;
-    for (let x = start; x < end; x++) {
-        if (value === data[row][x]) {
-            return false;
-        }
-    }
-    if (line) {
-        for (let x = start; x < end; x++) {
-            if (value === data[x][col]) {
-                return false;
-            }
-        }
-    }
-    if (column) {
-        let sector_x = calc(row);
-        let sector_y = calc(col);
-        for (let x = sector_x; x < sector_x + 3; x++) {
-            for (let y = sector_y; y < sector_y + 3; y++) {
-                if (data[x][y] === value) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    return false;
-}
-
-/**
- * @param {number[][]} data
- * @param {number} row
- * @param {number} col
- * @returns {boolean}
- */
-function solver(data, row, col) {
-    let line = fund_next_cell(data, row, col);
-    if (!line) {
-        return true
-    }
-    [row, col] = line;
-    for (let value = start + 1; value <= end; value++) {
-        let result = validate(row, col, value, data);
-        if (result) {
-            data[row][col] = value;
-            if (solver(data, row, col)) {
-                return true;
-            }
-            data[row][col] = 0;
-        }
-    }
-    return false;
+    document.querySelectorAll('button.reset').forEach(button => button.disabled = false);
 }
 
 
@@ -208,13 +146,14 @@ window.onresize = viewPort;
 
 
 window.onload = function () {
-    if (typeof testWindow != null && location.href.endsWith('#tests')) {
-        testWindow();
-        return
-    }
     viewPort();
     showVersion();
     document.querySelector('.reset').addEventListener('click', resetClick);
     document.querySelector('.run').addEventListener('click', runClick);
-    createTable();
+    let select = document.querySelector('#sizeSelect');
+    select.addEventListener('change', evt => {
+        document.querySelector('table').remove();
+        createTable(Number(evt.target.value));
+    });
+    createTable(Number(select.value));
 }

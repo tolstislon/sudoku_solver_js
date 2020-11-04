@@ -1,10 +1,3 @@
 # Sudoku solver
 
-Simple Sudoku Solver 9x9
-
-
-##### tests
-
-```
-path\index.html#tests
-```
+Simple Sudoku Solver 9x9 and 16x16
